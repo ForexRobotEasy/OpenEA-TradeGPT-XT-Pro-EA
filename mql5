@@ -1,0 +1,92 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                  OpenEA TradeGPT XT Pro EA       |
+//|                                             forexroboteasy.com  |
+//|                                      Developed by Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+#property strict
+
+// Stochastic Indicator Parameters
+input int stochPeriod = 14;
+input int stochDPeriod = 3;
+input int stochKPeriod = 3;
+input int stochSMA = 1;
+input double stochBuyThreshold = 20;
+input double stochSellThreshold = 80;
+
+// RSI Indicator Parameters
+input int rsiPeriod = 14;
+input double rsiBuyThreshold = 30;
+input double rsiSellThreshold = 70;
+
+// MACD Indicator Parameters
+input int macdFastEmaPeriod = 12;
+input int macdSlowEmaPeriod = 26;
+input int macdSignalPeriod = 9;
+input double macdBuyThreshold = 0;
+input double macdSellThreshold = 0;
+
+// OpenAI ChatGPT Integration Parameters
+input bool enableChatGPT = true;
+
+// Symbol Selection Parameters
+input string symbol1 = 'EURUSD';
+input string symbol2 = 'XAUUSD';
+
+//+------------------------------------------------------------------+
+//| Custom indicator initialization function                         |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Add initialization logic here
+    
+    return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Custom indicator deinitialization function                       |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+    // Add deinitialization logic here
+}
+
+//+------------------------------------------------------------------+
+//| Custom indicator iteration function                              |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+    // Calculate Stochastic indicator
+    double stochMain[], stochSignal[];
+    int calculated = iStochastic(NULL, 0, stochPeriod, stochDPeriod, stochKPeriod, stochSMA, MODE_MAIN, stochMain);
+    calculated = iStochastic(NULL, 0, stochPeriod, stochDPeriod, stochKPeriod, stochSMA, MODE_SIGNAL, stochSignal);
+
+    // Calculate RSI indicator
+    double rsi[];
+    calculated = iRSI(NULL, 0, rsiPeriod, PRICE_CLOSE, rsi);
+
+    // Calculate MACD indicator
+    double macdMain[], macdSignal[];
+    calculated = iMACD(NULL, 0, macdFastEmaPeriod, macdSlowEmaPeriod, macdSignalPeriod, PRICE_CLOSE, MODE_MAIN, macdMain);
+    calculated = iMACD(NULL, 0, macdFastEmaPeriod, macdSlowEmaPeriod, macdSignalPeriod, PRICE_CLOSE, MODE_SIGNAL, macdSignal);
+
+    // OpenAI ChatGPT Integration
+    if (enableChatGPT)
+    {
+        // Integrate OpenAI ChatGPT technology here
+    }
+
+    // Trading logic
+    if (stochMain[0] < stochBuyThreshold && rsi[0] < rsiBuyThreshold && macdMain[0] > macdBuyThreshold)
+    {
+        // Generate buy signal
+        // Add your buy order execution code here
+    }
+    else if (stochMain[0] > stochSellThreshold && rsi[0] > rsiSellThreshold && macdMain[0] < macdSellThreshold)
+    {
+        // Generate sell signal
+        // Add your sell order execution code here
+    }
+}
+
+//+------------------------------------------------------------------+
